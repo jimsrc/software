@@ -7,7 +7,7 @@
 # exit on error
 set -e
 
-TMUX_VERSION=2.1 #2.0
+TMUX_VERSION=2.3 #2.1 #2.0
 
 # create our directories
 DirRepo=$PWD
