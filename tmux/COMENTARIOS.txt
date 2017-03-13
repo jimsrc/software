@@ -1,0 +1,2 @@
+para compiladores >=gcc-5, reemplazar este script (requirements/patches/MKlib_gen.sh) del ncurses, aqui:
+$HOME/tmux_tmp/ncurses-5.9/ncurses/base/MKlib_gen.sh
