@@ -1,0 +1,10 @@
+El archivo 'setlayout.c' lo baje de:
+http://openbox.org/dist/tools/setlayout.c
+y sirve para hacer un grid de workspaces.
+
+Luego, siguiendo:
+https://superuser.com/questions/347528/openbox-make-4-desktops-2x2
+compilamos y ejecutamos este codigo, y listo!, ya tenemos el grid.
+
+Para un arreglo de 2 filas, y 3 columnas:
+./setlayout 0 3 2 0
