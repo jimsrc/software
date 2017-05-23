@@ -12,9 +12,14 @@ sudo apt-get autoremove
 n=`cat /proc/cpuinfo | grep "cpu cores" | uniq | awk '{print $NF}'`
  
 # grab the necessary files
-wget http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.5.tar.gz
-tar xzvf openmpi-1.6.5.tar.gz
-cd openmpi-1.6.5
+# NOTE: see this page:
+# https://www.open-mpi.org/software/ompi
+# to check the latest OpenMPI version.
+MPI_VERSION_MAIN=2.1  # 1.6
+MPI_VERSION_SUB=2.1.1 # 1.6.5
+wget http://www.open-mpi.org/software/ompi/v${MPI_VERSION_MAIN}/downloads/openmpi-${MPI_VERSION_SUB}.tar.gz
+tar xzvf openmpi-${MPI_VERSION_SUB}.tar.gz
+cd openmpi-${MPI_VERSION_SUB}
  
 echo "Beginning the installation..."
 ./configure --prefix=$installDIR
