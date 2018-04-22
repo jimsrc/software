@@ -9,6 +9,9 @@ DirTmp=${HOME}/tmux_tmp
 GCC_VERSION=$(gcc --version | grep gcc | awk '{print $3}' | awk -F. '{print $1}')
 TMUX_GZ=tmux-${TMUX_VERSION}.tar.gz
 
+# dont' associate these rules with files/dirs
+.PHONY: tmux
+
 libevent:
 	cp -pv ${DirRepo}/requirements/libevent-2.0.19-stable.tar.gz ${DirTmp}/.
 	cd ${DirTmp}
