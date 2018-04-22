@@ -7,6 +7,7 @@ DirTmp=${HOME}/tmux_tmp
 # catch the leading number of the version 'A', where:
 # gcc --version == A.B.C
 GCC_VERSION=$(gcc --version | grep gcc | awk '{print $3}' | awk -F. '{print $1}')
+TMUX_GZ=tmux-${TMUX_VERSION}.tar.gz
 
 libevent:
 	cp -pv ${DirRepo}/requirements/libevent-2.0.19-stable.tar.gz ${DirTmp}/.
@@ -34,10 +35,26 @@ ncurses:
 
 
 tmux:
-	mkdir -p ${PREFIX} ${HOME}/tmux_tmp
+	wget \
+		-O ${TMUX_GZ} \
+		https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz
+	mkdir -p ${PREFIX} ${DirTmp}
 	$(MAKE) ncurses
 	$(MAKE) libevent
+	#--- ok, now we build tmux-{TMUX_VERSION}
+	tar xvzf ${TMUX_GZ} 
+	cd tmux-${TMUX_VERSION}
+	./configure \
+		CFLAGS="-I${PREFIX}/include -I${PREFIX}/include/ncurses" \
+		LDFLAGS="-L${PREFIX}/lib -L${PREFIX}/include/ncurses -L${PREFIX}/include"
+	CPPFLAGS="-I${PREFIX}/include -I${PREFIX}/include/ncurses" \
+		LDFLAGS="-static -L${PREFIX}/include -L${PREFIX}/include/ncurses -L${PREFIX}/lib" \
+		make
+	cp tmux ${PREFIX}/bin/tmux_${TMUX_VERSION}
 	rm -rf ${DirTmp}
 
+
+clean:
+	-rm -rf ${DirTmp} ${TMUX_GZ}
 
 #EOF
