@@ -13,12 +13,12 @@ TMUX_VERSION=2.3 #2.1 #2.0
 DirRepo=$PWD
 PREFIX=$HOME/local
 mkdir -p $PREFIX $HOME/tmux_tmp
-cp ./requirements/*  $HOME/tmux_tmp/.
+cp -rv ./requirements/*  $HOME/tmux_tmp/.
 cd $HOME/tmux_tmp
 
 # download source files for tmux, libevent, and ncurses
 #wget -O tmux-${TMUX_VERSION}.tar.gz http://sourceforge.net/projects/tmux/files/tmux/tmux-${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz/download
-wget -O tmux-${TMUX_VERSION}.tar.gz https://github.com/tmux/tmux/releases/download/2.1/tmux-${TMUX_VERSION}.tar.gz
+#wget -O tmux-${TMUX_VERSION}.tar.gz https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz
 #wget https://github.com/downloads/libevent/libevent/libevent-2.0.19-stable.tar.gz
 #wget ftp://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz
 # For more, see tmux versions:
@@ -43,6 +43,13 @@ cd ..
 cp -p $DirRepo/requirements/ncurses-5.9.tar.gz .
 tar xvzf ncurses-5.9.tar.gz
 cd ncurses-5.9
+# check if we need to use the ncurses patch
+GCC_VERSION=$(gcc --version | grep gcc | awk '{print $3}' | awk -F. '{print $1}')
+echo -e "\n [*] gcc version: ${GCC_VERSION}\n"
+if [[ ${GCC_VERSION} -ge 5 ]]; then # is gcc version >=5.* ??
+	echo -e "\n [*] using ncurses patch for >=gcc-5.*\n"
+    cp -r $DirRepo/tmux/requirements/patches $DirTmp/ncurses/base/MKlib_gen.sh
+fi
 ./configure --prefix=$PREFIX
 make
 make install
