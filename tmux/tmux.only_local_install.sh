@@ -10,10 +10,10 @@ set -e
 TMUX_VERSION=2.3 #2.1 #2.0
 
 # create our directories
-DirRepo=$PWD
+DirRepo=$PWD/..
 PREFIX=$HOME/local
 mkdir -p $PREFIX $HOME/tmux_tmp
-cp -rv ./requirements/*  $HOME/tmux_tmp/.
+cp -rv ${DirRepo}/tmux/requirements/*  $HOME/tmux_tmp/.
 cd $HOME/tmux_tmp
 
 # download source files for tmux, libevent, and ncurses
@@ -29,7 +29,7 @@ cd $HOME/tmux_tmp
 ############
 # libevent #
 ############
-cp -p $DirRepo/requirements/libevent-2.0.19-stable.tar.gz .
+cp -pv $DirRepo/tmux/requirements/libevent-2.0.19-stable.tar.gz .
 tar xvzf libevent-2.0.19-stable.tar.gz
 cd libevent-2.0.19-stable
 ./configure --prefix=$PREFIX --disable-shared
@@ -40,7 +40,7 @@ cd ..
 ############
 # ncurses  #
 ############
-cp -p $DirRepo/requirements/ncurses-5.9.tar.gz .
+cp -pv $DirRepo/tmux/requirements/ncurses-5.9.tar.gz .
 tar xvzf ncurses-5.9.tar.gz
 cd ncurses-5.9
 # check if we need to use the ncurses patch
@@ -48,7 +48,7 @@ GCC_VERSION=$(gcc --version | grep gcc | awk '{print $3}' | awk -F. '{print $1}'
 echo -e "\n [*] gcc version: ${GCC_VERSION}\n"
 if [[ ${GCC_VERSION} -ge 5 ]]; then # is gcc version >=5.* ??
 	echo -e "\n [*] using ncurses patch for >=gcc-5.*\n"
-    cp -r $DirRepo/tmux/requirements/patches $DirTmp/ncurses/base/MKlib_gen.sh
+    cp -rv $DirRepo/tmux/requirements/patches/MKlib_gen.sh $HOME/tmux_tmp/ncurses-5.9/ncurses/base/MKlib_gen.sh
 fi
 ./configure --prefix=$PREFIX
 make
